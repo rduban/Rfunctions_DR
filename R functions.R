@@ -1,4 +1,9 @@
-
+if(!require(psych)){
+  install.packages('psych')  #instalar paquete psych
+  require(psych)}
+if(!require(dplyr)){
+  install.packages('dplyr')  #instalar paquete dplyr
+  require(dplyr)}
 
 mycorr<-function(mydata,group){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
