@@ -135,4 +135,4 @@ sepWords<-function(x,y){  #x = vector, y = separador
 }
 
 
-print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta algún inconveniente al usar las funciones porfavor contactar al correo: rduban@uninorte.edu.co")
+print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta algún inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
