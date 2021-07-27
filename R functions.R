@@ -6,7 +6,11 @@ if(!require(dplyr)){
   require(dplyr)}
 if(!require(lavaan)){install.packages('lavaan')} 
 require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuaciones estructurales
-
+if(!require(lsr)){
+  install.packages('lsr')  #instalar paquete psych
+require(lsr)}  
+  
+################################
 mycorr<-function(mydata,group){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
   
@@ -134,5 +138,17 @@ sepWords<-function(x,y){  #x = vector, y = separador
   mitabla
 }
 
+my_anova<-function(x,n){
+  #esta funcion recibe un objeto anova y arroja una tabla con "df", f value, p value y eta^2
+  y<-summary(x)
+  z<-etaSquared(x,type=2,anova = FALSE)
+  tabla<-as.data.frame(matrix(NA, ncol=4,nrow = n)); names(tabla)<-c("Df","F value","p value","eta^2")
+  tabla[,1]<- as.vector(y[[1]][["Df"]][1:n])
+  tabla[,2]<-as.vector(round(y[[1]][["F value"]][1:n],2))
+  tabla[,3]<-as.vector(round(y[[1]][["Pr(>F)"]][1:n],4))
+  tabla[,4]<-as.vector(round(z[1:n,1],4))
+  rownames(tabla)<- rownames(y[[1]])[1:n]
+  tabla
+}
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta algún inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
