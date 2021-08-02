@@ -15,7 +15,7 @@ mycorr<-function(mydata,group){ #esta funcion recibe un conjunto de variables cu
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
   
   if(isFALSE(group)==TRUE){ 
-    x1<-as.data.frame(round(cor(mydata),3)) #identificando las correlaciones significativas
+    x1<-as.data.frame(round(cor(mydata),2)) #identificando las correlaciones significativas
   }
   if(isTRUE(group)==TRUE){
     
@@ -24,8 +24,8 @@ mycorr<-function(mydata,group){ #esta funcion recibe un conjunto de variables cu
     gr1<-gr1[ , !(names(gr1) %in% borrar)] #eliminamos variable grupo
     gr2<-subset(mydata,mydata[1]==unique(mydata[1])[2,])
     gr2<-gr2[ , !(names(gr2) %in% borrar)]
-    x1<-as.data.frame(round(cor(gr1),3)) #matriz de correlaciones grupo 1
-    x2<-as.data.frame(round(cor(gr2),3)) #matriz de correlaciones grupo 2
+    x1<-as.data.frame(round(cor(gr1),2)) #matriz de correlaciones grupo 1
+    x2<-as.data.frame(round(cor(gr2),2)) #matriz de correlaciones grupo 2
     y<-as.data.frame(matrix(NA, ncol=ncol(x1),nrow = nrow(x1)))
     for(i in 1:nrow(x1)){
       for(j in 1:nrow(x1)){
