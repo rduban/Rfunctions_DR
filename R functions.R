@@ -163,4 +163,33 @@ mydcohen<-function(df,varcon,varchar){
   d.cohen
 }
 
+my_t.test<-function(varscon,varfact,paired,var.equal){
+  varfact<-factor(varfact)
+  tabla<-as.data.frame(matrix(NA,ncol = 10, nrow = 1)); names(tabla)<-c("t value","df","p.value","d.cohen",paste("M",levels(varfact)[1]),paste("SD",levels(varfact)[1]),paste("n",levels(varfact)[1]),paste("M",levels(varfact)[2]),paste("SD",levels(varfact)[2]),paste("n",levels(varfact)[2]))
+  a<-tapply(varscon,varfact,FUN = function(x){round(na.omit(mean(x)),2)})
+  b<-tapply(varscon,varfact,FUN = function(x){round(na.omit(sd(x)),2)})
+  n<-tapply(varscon,varfact,FUN = function(x){round(na.omit(length(x)),2)})
+  
+  if(paired==TRUE){
+      x<-t.test(varscon~varfact, paired = TRUE, var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
+      tabla[1,4]<-sqrt((round(x$estimate/min(tapply(varscon,varfact,sd)),3))^2)
+  }
+  if(paired==FALSE){
+    x<-t.test(varscon~varfact, paired = FALSE,var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
+    tabla[1,4]<-sqrt((round((max(x$estimate)-min(x$estimate))/mean(tapply(varscon,varfact,sd)),3))^2)
+  }
+  
+  tabla[1,1]<- round(x$statistic,2)
+  tabla[1,2]<- x$parameter
+  tabla[1,3]<- round(x$p.value,3)
+  tabla[1,5]<-a[1]
+  tabla[1,6]<-b[1]
+  tabla[1,7]<-n[1]
+  tabla[1,8]<-a[2]
+  tabla[1,9]<-b[2]
+  tabla[1,10]<-n[2]
+  
+  tabla
+  }
+  
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
