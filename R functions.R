@@ -192,4 +192,32 @@ my_t.test<-function(varscon,varfact,paired,var.equal){
   tabla
   }
   
+  my_anova2x2<-function(modelos,level){
+#a<-aov(lm(autoeficaciaTec ~fase*genero+fase*contexto+fase*niv.ensenanza+fase*area, data = b))
+tabla<-as.data.frame(matrix(NA,ncol = 5, nrow = length(modelos)))
+dimnames(tabla)<-list(names(modelos),c("df","df.denom","F value","p value","eta.sq"))
+for(i in 1:length(modelos)){
+  a<-summary(modelos[[i]])
+  z<-etaSquared(modelos[[i]],type=2,anova = FALSE)
+  
+  if(level==3){
+   b<-a[[1]][3,]  
+   df_dn<-a[[1]][4,1]
+   eta.sq<-z[3,1]  
+  }
+  if(level==2){
+   b<-a[[1]][2,]  
+   df_dn<-a[[1]][3,1]
+   eta.sq<-z[2,1]
+  }
+  if(level==1){
+   b<-a[[1]][1,]  
+   df_dn<-a[[1]][2,1]
+   eta.sq<-z[1,1]
+  }
+  tabla[i,1]<-b[1]; tabla[i,2]<-df_dn; tabla[i,3:4]<-round(b[4:5],3);tabla[i,5]<-round(eta.sq,3)
+  }
+tabla
+}
+  
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
