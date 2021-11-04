@@ -91,7 +91,7 @@ mycfa<-function(mymodels,mydata){
   indextablevalues<-as.data.frame(matrix(NA,nrow = nrow(indextable), ncol = ncol(indextable)))
   names(indextablevalues)<-names(indextable)
   row.names(indextablevalues)<-row.names(indextable)
-  indextablevalues <- rename(indextablevalues, chi2_gl = df)
+  names(indextablevalues)[2] <- "chi2_gl"
   
   # a continuacion asignamos 1 cada vez que cada uno de los indices de ajuste de cada modelo se encuentran dentro de los umbrales aceptados. 
   #Se asigna 0 cuando no ocurre. Estos valores se guardan en una nueva tabla
