@@ -9,7 +9,12 @@ require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuacione
 if(!require(lsr)){
   install.packages('lsr')  #instalar paquete psych
 require(lsr)}  
-  
+ if(!require(car)){
+  install.packages('car')  #instalar paquete psych
+require(car)}
+ if(!require(lmtest)){
+  install.packages('lmtest')  #instalar paquete psych
+require(lmtest)}
 ################################
 mycorr<- function(mydata,group){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
@@ -219,5 +224,25 @@ for(i in 1:length(modelos)){
   }
 tabla
 }
+ 
+supu_rlm<-function(modelo){
   
+x<-durbinWatsonTest(modelo)
+durbin_wat<-c(x[[2]],x[[3]])
+x<-shapiro.test(modelo$residuals)
+shapiro<-c(x[[1]],x[[2]])
+x<-bptest(modelo)
+breush_pagan<-c(x[[1]],x[[4]])
+
+y<-round(as.data.frame(rbind(durbin_wat,shapiro,breush_pagan)),3)
+cumple<-c("No","No","No")
+if(y[1,2]>0.05){cumple[1]<-"Si"};if(y[2,2]>0.05){cumple[2]<-"Si"};if(y[3,2]>0.05){cumple[3]<-"Si"}
+
+x<-cbind(y, cumple)
+names(x)<-c("Estadistico","p.valor","Cumple")
+
+cat("VIF:",vif(modelo))
+
+x
+}
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
