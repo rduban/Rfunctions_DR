@@ -240,9 +240,9 @@ if(y[1,2]>0.05){cumple[1]<-"Si"};if(y[2,2]>0.05){cumple[2]<-"Si"};if(y[3,2]>0.05
 
 x<-cbind(y, cumple)
 names(x)<-c("Estadistico","p.valor","Cumple")
-
+if(length(modelo$terms)>3){
 cat("VIF:",vif(modelo))
-
+}
 x
 }
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
