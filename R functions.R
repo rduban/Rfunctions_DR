@@ -231,7 +231,9 @@ supu_rlm<-function(modelo, studentize = TRUE){
     modelo$residuals<-rstudent(modelo)
     x<-bptest(modelo)
       }
-  if(studentize==FALSE){x<-bptest(modelo, studentize = FALSE)}
+  if(studentize==FALSE){
+    modelo$residuals<-scale(modelo$residuals)
+    x<-bptest(modelo, studentize = FALSE)}
   
   breush_pagan<-c(x[[1]],x[[4]])
   x<-durbinWatsonTest(modelo)
