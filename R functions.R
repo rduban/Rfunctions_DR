@@ -244,7 +244,7 @@ supu_rlm<-function(modelo){
     cat("VIF:",vif(modelo))
   }
 
-car::scatterplot(modelo$fitted.values,residuales, ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
+car::scatterplot(modelo$fitted.values,rstudent(modelo), ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
 x
 }
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
