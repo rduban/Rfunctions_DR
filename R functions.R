@@ -227,22 +227,24 @@ tabla
  
 supu_rlm<-function(modelo){
   
-x<-durbinWatsonTest(modelo)
-durbin_wat<-c(x[[2]],x[[3]])
-x<-shapiro.test(modelo$residuals)
-shapiro<-c(x[[1]],x[[2]])
-x<-bptest(modelo)
-breush_pagan<-c(x[[1]],x[[4]])
+  x<-durbinWatsonTest(modelo)
+  durbin_wat<-c(x[[2]],x[[3]])
+  x<-shapiro.test(modelo$residuals)
+  shapiro<-c(x[[1]],x[[2]])
+  x<-bptest(modelo)
+  breush_pagan<-c(x[[1]],x[[4]])
+  
+  y<-round(as.data.frame(rbind(durbin_wat,shapiro,breush_pagan)),3)
+  cumple<-c("No","No","No")
+  if(y[1,2]>0.05){cumple[1]<-"Si"};if(y[2,2]>0.05){cumple[2]<-"Si"};if(y[3,2]>0.05){cumple[3]<-"Si"}
+  
+  x<-cbind(y, cumple)
+  names(x)<-c("Estadistico","p.valor","Cumple")
+  if(length(modelo$terms)>3){
+    cat("VIF:",vif(modelo))
+  }
 
-y<-round(as.data.frame(rbind(durbin_wat,shapiro,breush_pagan)),3)
-cumple<-c("No","No","No")
-if(y[1,2]>0.05){cumple[1]<-"Si"};if(y[2,2]>0.05){cumple[2]<-"Si"};if(y[3,2]>0.05){cumple[3]<-"Si"}
-
-x<-cbind(y, cumple)
-names(x)<-c("Estadistico","p.valor","Cumple")
-if(length(modelo$terms)>3){
-cat("VIF:",vif(modelo))
-}
+car::scatterplot(modelo$fitted.values,residuales, ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
 x
 }
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
