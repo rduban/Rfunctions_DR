@@ -225,14 +225,20 @@ for(i in 1:length(modelos)){
 tabla
 }
  
-supu_rlm<-function(modelo){
+supu_rlm<-function(modelo, studentize = TRUE){
   
+  if(studentize){
+    modelo$residuals<-rstudent(modelo)
+    x<-bptest(modelo)
+      }
+  if(studentize==FALSE){x<-bptest(modelo, studentize = FALSE)}
+  
+  breush_pagan<-c(x[[1]],x[[4]])
   x<-durbinWatsonTest(modelo)
   durbin_wat<-c(x[[2]],x[[3]])
   x<-shapiro.test(modelo$residuals)
   shapiro<-c(x[[1]],x[[2]])
-  x<-bptest(modelo)
-  breush_pagan<-c(x[[1]],x[[4]])
+  
   
   y<-round(as.data.frame(rbind(durbin_wat,shapiro,breush_pagan)),3)
   cumple<-c("No","No","No")
@@ -244,7 +250,7 @@ supu_rlm<-function(modelo){
     cat("VIF:",vif(modelo))
   }
 
-car::scatterplot(modelo$fitted.values,rstudent(modelo), ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
+car::scatterplot(modelo$fitted.values,modelo$residuals, ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
 x
 }
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
