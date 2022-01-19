@@ -74,16 +74,16 @@ mycorr<- function(mydata,group){ #esta funcion recibe un conjunto de variables c
   z
 }
 
-
-mycfa<-function(mymodels,mydata){  
+ mycfa<-function(mymodels,mydata,estimador = "ML"){  
   #Recibe una lista que incluye los modelos y el dataframe con las variables
   #arroja una lista con los modelos especificados, objetos lavaan, la tabla de indices de ajuste,
   #y la tabla donde se determina el numero de indices de ajuste dentro los umbrales aceptables para determinar el modelo ganador
-  
-  modelos<-list()
-  for(i in 1:length(mymodels)){
-    modelos[[i]] <-cfa(mymodels[[i]],data = mydata)  # computamos cfa y guardamos los objetos lavaan en una lista
-  }
+ 
+modelos<-list()
+a<-ifelse(estimador=="WLS","WLS","ML")
+for(i in 1:length(mymodels)){
+  modelos[[i]] <-cfa(mymodels[[i]],data = mydata, estimator = a)  # computamos cfa y guardamos los objetos lavaan en una lista
+}
   names(modelos)<-names(mymodels)
   
   indextable0<-as.data.frame(matrix(NA,nrow=length(modelos),ncol = length(fitmeasures(modelos[[1]])))) 
@@ -92,7 +92,12 @@ mycfa<-function(mymodels,mydata){
   for(i in 1:nrow(indextable0)){
     indextable0[i,]<-round(as.vector(unlist(fitmeasures(modelos[[i]]))),3)  #obtemos los indices de ajuste de cada modelo y los guardamos en una tabla
   }
-  indextable<-cbind(indextable0[3:5],indextable0[9:10],indextable0[13:14],indextable0[16],indextable0[23],indextable0[26],indextable0[29],indextable0[38:40],indextable0[42]) #seleccionamos indices de interes
+  # seleccionamos indices de interes  
+  if(a=="WLS"){indextable<-indextable0[c(3:5,9:10,13:14,16,17,20,23,32:34,36)]
+  } 
+  if(a=="ML"){indextable<-indextable0[c(3:5,9:10,13:14,16,23,26,29,38:40,42)] 
+  }
+  
   indextablevalues<-as.data.frame(matrix(NA,nrow = nrow(indextable), ncol = ncol(indextable)))
   names(indextablevalues)<-names(indextable)
   row.names(indextablevalues)<-row.names(indextable)
@@ -129,7 +134,6 @@ mycfa<-function(mymodels,mydata){
   cat('The comparison of the models and the scoring of the fit indices were based on the guidelines of Hair, et al. (2014). Cite: Hair, J., Black, W., Babin, B. & Anderson, R. (2014). Multivariate Data Analysis (7th ed.). USA. Pearson.' )
   output
 }
-
 
 sepWords<-function(x,y){  #x = vector, y = separador
   
