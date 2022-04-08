@@ -259,4 +259,33 @@ supu_rlm<-function(modelo, studentize = TRUE){
 car::scatterplot(modelo$fitted.values,modelo$residuals, ylab = "Residuales",xlab = "Estimacion", main = "Homocedasticidad")
 x
 }
+  
+myFactorInvariance<-function(model,data,vec,estimator="ML"){
+
+data<-na.omit(data)
+
+bf<-cfa(modelo1,data = data ,estimator=estimator,group = vec) # configural metrical invariance
+bf_metric<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings")) #weak metrical invariance
+bf_scalar<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts")) #strong scalar invariance
+bf_factor_mean<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts","means")) # FACTOR MEAN INVARIANCE
+
+a<-lavaan::anova(bf,bf_metric,bf_scalar,bf_factor_mean)
+
+
+findex<-c("cfi","tli","rmsea")
+fit_indices<-data.frame(rbind(lavaan::fitMeasures(bf,findex),
+                              lavaan::fitMeasures(bf_metric,findex),
+                              lavaan::fitMeasures(bf_scalar,findex),
+                              lavaan::fitMeasures(bf_factor_mean,findex)))
+
+delta_cfi<-round(abs(c(NA,(fit_indices[2:5,1]-fit_indices[1:4,1])[1:3])),3)
+delta_tli<-round(abs(c(NA,(fit_indices[2:5,2]-fit_indices[1:4,2])[1:3])),3)
+delta_rmsea<-round(abs(c(NA,(fit_indices[2:5,3]-fit_indices[1:4,3])[1:3])),3)
+
+b<-cbind(a,fit_indices,delta_cfi,delta_tli,delta_rmsea)
+row.names(b)<-c("CONFIGURAL INVARIANCE","WEAK METRIC INVARIANCE","STRONG SCALAR INVARIANCE","FACTOR MEAN INVARIANCE")
+print(b)
+b
+}
+
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
