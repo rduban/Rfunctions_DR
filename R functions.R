@@ -262,8 +262,6 @@ x
   
 myFactorInvariance<-function(model,data,vec,estimator="ML"){
 
-data<-na.omit(data)
-
 bf<-cfa(modelo1,data = data ,estimator=estimator,group = vec) # configural metrical invariance
 bf_metric<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings")) #weak metrical invariance
 bf_scalar<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts")) #strong scalar invariance
