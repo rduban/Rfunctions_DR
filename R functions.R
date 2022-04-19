@@ -262,10 +262,10 @@ x
   
 myFactorInvariance<-function(model,data,vec,estimator="ML"){
 
-bf<-cfa(modelo1,data = data ,estimator=estimator,group = vec) # configural metrical invariance
-bf_metric<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings")) #weak metrical invariance
-bf_scalar<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts")) #strong scalar invariance
-bf_factor_mean<-cfa(modelo1,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts","means")) # FACTOR MEAN INVARIANCE
+bf<-cfa(model,data = data ,estimator=estimator,group = vec) # configural metrical invariance
+bf_metric<-cfa(model,data = data ,estimator=estimator,group = vec,group.equal=c("loadings")) #weak metrical invariance
+bf_scalar<-cfa(model,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts")) #strong scalar invariance
+bf_factor_mean<-cfa(model,data = data ,estimator=estimator,group = vec,group.equal=c("loadings","intercepts","means")) # FACTOR MEAN INVARIANCE
 
 a<-lavaan::anova(bf,bf_metric,bf_scalar,bf_factor_mean)
 
