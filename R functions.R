@@ -282,8 +282,8 @@ delta_rmsea<-round(abs(c(NA,(fit_indices[2:5,3]-fit_indices[1:4,3])[1:3])),3)
 
 b<-cbind(a,fit_indices,delta_cfi,delta_tli,delta_rmsea)
 row.names(b)<-c("CONFIGURAL","WEAK METRIC","STRONG SCALAR","FACTOR MEAN")
-print(round(b[-c(2,3)],3))
-b[-c(2,3)]
+print(round(b,3))
+b
 }
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
