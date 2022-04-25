@@ -281,7 +281,7 @@ delta_tli<-round(abs(c(NA,(fit_indices[2:5,2]-fit_indices[1:4,2])[1:3])),3)
 delta_rmsea<-round(abs(c(NA,(fit_indices[2:5,3]-fit_indices[1:4,3])[1:3])),3)
 
 b<-cbind(a,fit_indices,delta_cfi,delta_tli,delta_rmsea)
-row.names(b)<-c("CONFIGURAL INVARIANCE","WEAK METRIC INVARIANCE","STRONG SCALAR INVARIANCE","FACTOR MEAN INVARIANCE")
+row.names(b)<-c("CONFIGURAL","WEAK METRIC","STRONG SCALAR","FACTOR MEAN")
 print(b)
 b
 }
