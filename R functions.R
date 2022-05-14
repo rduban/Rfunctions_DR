@@ -16,7 +16,7 @@ require(car)}
   install.packages('lmtest')  #instalar paquete psych
 require(lmtest)}
 ################################
-mycorr<- function(mydata,group){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
+mycorr<- function(mydata,group=FALSE){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
   
   if(isFALSE(group)==TRUE){ 
