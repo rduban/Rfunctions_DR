@@ -78,12 +78,11 @@ mycorr<- function(mydata,group=FALSE){ #esta funcion recibe un conjunto de varia
   #Recibe una lista que incluye los modelos y el dataframe con las variables
   #arroja una lista con los modelos especificados, objetos lavaan, la tabla de indices de ajuste,
   #y la tabla donde se determina el numero de indices de ajuste dentro los umbrales aceptables para determinar el modelo ganador
- 
 modelos<-list()
-
-for(i in 1:length(mymodels)){
-  modelos[[i]] <-cfa(mymodels[[i]],data = mydata, estimator = estimador)  # computamos cfa y guardamos los objetos lavaan en una lista
-}
+  
+  for(i in 1:length(mymodels)){
+    modelos[[i]] <-cfa(mymodels[[i]],data = mydata, estimator = estimador)  # computamos cfa y guardamos los objetos lavaan en una lista
+  }
   names(modelos)<-names(mymodels)
   
   indextable0<-as.data.frame(matrix(NA,nrow=length(modelos),ncol = length(fitmeasures(modelos[[1]])))) 
@@ -94,7 +93,7 @@ for(i in 1:length(mymodels)){
   }
   # seleccionamos indices de interes  
   indextable<-indextable0[c("chisq","df","pvalue","cfi","tli","nnfi","nfi","pnfi","rni","rmsea","rmsea.ci.lower","rmsea.ci.upper","srmr","gfi","agfi","pgfi","ecvi")]
-    
+  
   indextablevalues<-as.data.frame(matrix(NA,nrow = nrow(indextable), ncol = ncol(indextable)))
   names(indextablevalues)<-names(indextable)
   row.names(indextablevalues)<-row.names(indextable)
@@ -111,7 +110,6 @@ for(i in 1:length(mymodels)){
   indextablevalues$pnfi<- ifelse(indextable$pnfi==max(indextable$pnfi),1,ifelse(max(indextable$pnfi)-indextable$pnfi<=0.09,1,0))
   indextablevalues$rni<-ifelse(nrow(mydata)<500 & indextable$rni==max(indextable$rni),1,0)
   indextablevalues$rmsea<- ifelse(nrow(mydata)>=100 & indextable$rmsea<=0.08,1,0)
-  indextablevalues$rmsea.pvalue<-ifelse(indextable$rmsea.pvalue<=0.05,1,0)
   indextablevalues$srmr<- ifelse(nrow(mydata)<500 & indextable$srmr==min(indextable$srmr),1,0)
   indextablevalues$gfi<- ifelse(indextable$gfi==max(indextable$gfi),1,0)
   indextablevalues$agfi<- ifelse(indextable$agfi>=0.9,1,ifelse(indextable$agfi==max(indextable$agfi),1,0))
@@ -131,6 +129,7 @@ for(i in 1:length(mymodels)){
   cat('The comparison of the models and the scoring of the fit indices were based on the guidelines of Hair, et al. (2014). Cite: Hair, J., Black, W., Babin, B. & Anderson, R. (2014). Multivariate Data Analysis (7th ed.). USA. Pearson.' )
   output
 }
+
 
 sepWords<-function(x,y){  #x = vector, y = separador
   
