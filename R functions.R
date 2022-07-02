@@ -80,9 +80,9 @@ mycorr<- function(mydata,group=FALSE){ #esta funcion recibe un conjunto de varia
   #y la tabla donde se determina el numero de indices de ajuste dentro los umbrales aceptables para determinar el modelo ganador
  
 modelos<-list()
-a<-ifelse(estimador=="WLS","WLS","ML")
+
 for(i in 1:length(mymodels)){
-  modelos[[i]] <-cfa(mymodels[[i]],data = mydata, estimator = a)  # computamos cfa y guardamos los objetos lavaan en una lista
+  modelos[[i]] <-cfa(mymodels[[i]],data = mydata, estimator = estimador)  # computamos cfa y guardamos los objetos lavaan en una lista
 }
   names(modelos)<-names(mymodels)
   
@@ -93,11 +93,8 @@ for(i in 1:length(mymodels)){
     indextable0[i,]<-round(as.vector(unlist(fitmeasures(modelos[[i]]))),3)  #obtemos los indices de ajuste de cada modelo y los guardamos en una tabla
   }
   # seleccionamos indices de interes  
-  if(a=="WLS"){indextable<-indextable0[c(3:5,9:10,13:14,16,17,20,23,32:34,36)]
-  } 
-  if(a=="ML"){indextable<-indextable0[c(3:5,9:10,13:14,16,23,26,29,38:40,42)] 
-  }
-  
+  indextable<-indextable0[c("chisq","df","pvalue","cfi","tli","nnfi","nfi","pnfi","rni","rmsea","rmsea.ci.lower","rmsea.ci.upper","srmr","gfi","agfi","pgfi","ecvi")]
+    
   indextablevalues<-as.data.frame(matrix(NA,nrow = nrow(indextable), ncol = ncol(indextable)))
   names(indextablevalues)<-names(indextable)
   row.names(indextablevalues)<-row.names(indextable)
