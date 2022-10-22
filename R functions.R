@@ -281,5 +281,16 @@ row.names(b)<-c("CONFIGURAL","WEAK METRIC","STRONG SCALAR","FACTOR MEAN")
 print(b)
 b
 }
+  
+my_alphaCI<-function(datos,reps=1000,n=(nrow(datos)/3)){
+  id=1:nrow(datos)
+  a=NULL
+  for(i in 1:reps){
+   x<-datos[sample(id,n, replace = F),]
+    (a[i]<-as.numeric(psych::alpha(x)$total[1]))
+  }
+  a<-as.vector(quantile(a,probs = c(0.025,0.975)))
+  a
+}
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
