@@ -130,17 +130,18 @@ modelos<-list()
   output
 }
 
-my_esem<-function(cargas,n.factors){
-
+my_esem<-function(cargas){
+  
   esemmodel<-vector()
-
-  for(i in 1:n.factors){
+  
+  for(i in 1:ncol(cargas)){
     esemmodel[i]<-paste0("f",i,"=~",paste0(c(cargas[,i]),"*",names(cargas[,1]),collapse = "+"))
   }
-
+  
   esemmodel<-paste0(esemmodel,collapse = "\n") #Model Specification
   esemmodel  
 }
+
 
 sepWords<-function(x,y){  #x = vector, y = separador
   
