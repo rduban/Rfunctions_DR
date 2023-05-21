@@ -16,6 +16,11 @@ require(car)}
   install.packages('lmtest')  #instalar paquete psych
 require(lmtest)}
 ################################
+
+colores<- c("#CC0099","#00CC66","#0066CC","#F0E442","#CC6600",
+            "#00CCCC","#FF9900","#9933CC","#66CC00","#FF3366",
+            "#00FFCC","#FF6600","#6600CC","#CCCC00","#CC3300")
+
 mycorr<- function(mydata,group=FALSE){ #esta funcion recibe un conjunto de variables cuantitativas y arroja la matriz de correlaciones
   ## para obtener una matriz de correlaciones con cada diagonal segmentada por grupo la variable dicotomica debe ser la primera en el dataframe
   
@@ -303,6 +308,35 @@ my_alphaCI<-function(datos,reps=1000,n=(nrow(datos)/3)){
   }
   a<-as.vector(quantile(a,probs = c(0.025,0.975)))
   a
+}
+
+my_uman<-function(varcon,varcat){
+  x<-wilcox.test(varcon~varcat)
+  
+  y<-t(tapply(varcon,varcat,function(x){
+    paste0(round(median(x),2)," (",round(IQR(x),2),")")}))
+  
+  z<-cbind(round(x$statistic,3),round(x$p.value,3),y)
+  names(z)<-c("W","pvalue",unique(varcat))
+  z
+}
+
+my_kruskal<-function(varcon,varcat){
+  datos<-data.frame(varcon,varcat)
+  datos<-datos[!is.na(datos$varcat),]
+  
+  x<-kruskal.test(datos$varcon~datos$varcat)
+  
+  y<-t(tapply(datos$varcon,datos$varcat,function(x){
+    paste0(round(median(x),2)," (",round(IQR(x),2),")")}))
+  
+  x1<-paste0(round(x$statistic,3)," (",x$parameter,")")
+  
+  z<-cbind(x1,round(x$p.value,3),y)
+  
+  names(z)<-c("x2(df)","pvalue",unique(datos$varcat))
+  
+  z
 }
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
