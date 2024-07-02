@@ -339,4 +339,56 @@ my_kruskal<-function(varcon,varcat){
   z
 }
 
+# Función para realizar la prueba de proporciones y calcular OR con IC del 95%
+proportion_test <- function(df, moment_var) {
+  library(dplyr)
+  
+  # Extraer los nombres de las variables (columnas) excepto la variable 'moment_var'
+  variables <- setdiff(names(df), moment_var)
+  
+  # Crear un dataframe para almacenar los resultados
+  results <- data.frame(
+    variable = character(),
+    chi2 = numeric(),
+    df = numeric(),
+    p_value = numeric(),
+    OR = numeric(),
+    OR_lower = numeric(),
+    OR_upper = numeric(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Realizar la prueba de proporciones para cada variable
+  for (var in variables) {
+    tbl <- table(df[[var]], df[[moment_var]])
+    
+    # Chi-square test
+    chi_test <- chisq.test(tbl)
+    
+    # Fisher's Exact Test to get OR and confidence interval
+    fisher_test <- fisher.test(tbl)
+    
+    # OR and its 95% confidence interval
+    OR <- fisher_test$estimate
+    OR_ci <- fisher_test$conf.int
+    
+    # Agregar los resultados al dataframe
+    results <- rbind(
+      results,
+      data.frame(
+        variable = var,
+        chi2 = round(chi_test$statistic,3),
+        df = chi_test$parameter,
+        p_value = round(chi_test$p.value,3),
+        OR = round(OR,3),
+        OR_lower = round(OR_ci[1],3),
+        OR_upper = round(OR_ci[2],3),
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+  
+  return(results)
+}
+
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
