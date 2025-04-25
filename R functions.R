@@ -185,7 +185,7 @@ mydcohen<-function(df,varcon,varchar){
   d.cohen
 }
 
-my_t.test<- function(varscon,varfact,paired,var.equal){
+my_t.test<- function(varscon,varfact,var.equal){
   datos<-na.omit(data.frame(varscon,varfact))
   varfact<-factor(datos$varfact)
   tabla<-as.data.frame(matrix(NA,ncol = 10, nrow = 1)); names(tabla)<-c("t value","df","p.value","d.cohen",paste("M",levels(varfact)[1]),paste("SD",levels(varfact)[1]),paste("n",levels(varfact)[1]),paste("M",levels(varfact)[2]),paste("SD",levels(varfact)[2]),paste("n",levels(varfact)[2]))
@@ -194,11 +194,11 @@ my_t.test<- function(varscon,varfact,paired,var.equal){
   n<-tapply(datos$varscon,datos$varfact,FUN = function(x){round(na.omit(length(x)),2)})
   
   if(paired==TRUE){
-    x<-t.test(datos$varscon~datos$varfact, paired = TRUE, var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
+    x<-t.test(datos$varscon~datos$varfact, var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
     tabla[1,4]<-sqrt((round(x$estimate/min(tapply(datos$varscon,datos$varfact,sd)),3))^2)
   }
   if(paired==FALSE){
-    x<-t.test(datos$varscon~datos$varfact, paired = FALSE,var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
+    x<-t.test(datos$varscon~datos$varfact,var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
     tabla[1,4]<-sqrt((round((max(x$estimate)-min(x$estimate))/mean(tapply(datos$varscon,datos$varfact,sd)),3))^2)
   }
   
