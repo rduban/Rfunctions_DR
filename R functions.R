@@ -193,15 +193,9 @@ my_t.test<- function(varscon,varfact,var.equal){
   b<-tapply(datos$varscon,datos$varfact,FUN = function(x){round(na.omit(sd(x)),2)})
   n<-tapply(datos$varscon,datos$varfact,FUN = function(x){round(na.omit(length(x)),2)})
   
-  if(paired==TRUE){
-    x<-t.test(datos$varscon~datos$varfact, var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
-    tabla[1,4]<-sqrt((round(x$estimate/min(tapply(datos$varscon,datos$varfact,sd)),3))^2)
-  }
-  if(paired==FALSE){
     x<-t.test(datos$varscon~datos$varfact,var.equal = ifelse(var.equal==TRUE,TRUE,FALSE))
     tabla[1,4]<-sqrt((round((max(x$estimate)-min(x$estimate))/mean(tapply(datos$varscon,datos$varfact,sd)),3))^2)
-  }
-  
+    
   tabla[1,1]<- round(x$statistic,2)
   tabla[1,2]<- x$parameter
   tabla[1,3]<- round(x$p.value,3)
