@@ -166,18 +166,18 @@ sepWords<-function(x,y){  #x = vector, y = separador
   mitabla
 }
 
-my_anova<-function(x,n){
+my_anova<-function(x){
   #esta funcion recibe un objeto anova y arroja una tabla con "df", f value, p value y eta^2
   y<-summary(x)
-  z<-etaSquared(x,type=2,anova = FALSE)
-  tabla<-as.data.frame(matrix(NA, ncol=4,nrow = n)); names(tabla)<-c("Df","F value","p value","eta^2")
-  tabla[,1]<- as.vector(y[[1]][["Df"]][1:n])
-  tabla[,2]<-as.vector(round(y[[1]][["F value"]][1:n],2))
-  tabla[,3]<-as.vector(round(y[[1]][["Pr(>F)"]][1:n],4))
-  tabla[,4]<-as.vector(round(z[1:n,1],4))
-  rownames(tabla)<- rownames(y[[1]])[1:n]
+  z<-etaSquared(x,type=1,anova = F)
+  tabla<-as.data.frame(matrix(NA, ncol=4,nrow = 1)); names(tabla)<-c("Df","F value","p value","eta^2")
+  tabla[,1]<- as.vector(y[[1]][["Df"]][1])
+  tabla[,2]<-as.vector(round(y[[1]][["F value"]][1],2))
+  tabla[,3]<-as.vector(round(y[[1]][["Pr(>F)"]][1],4))
+  tabla[,4]<-as.vector(round(z[2],4))
   tabla
 }
+
 
 mydcohen<-function(df,varcon,varchar){
   a<-as.data.frame(df %>% group_by({{varchar}}) %>% summarise(M = mean(na.omit({{varcon}})),SD = sd(na.omit({{varcon}}))))
@@ -386,3 +386,4 @@ proportion_test <- function(df, moment_var) {
 }
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
+
