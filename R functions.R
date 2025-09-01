@@ -179,8 +179,8 @@ my_anova<-function(x){
 }
 
 my_descrip<-function(num,groups){
-  tapply(num,groups,function(i){paste0(round(mean(i),2)," (",
-                                             round(sd(i),2),")")})}
+  tapply(num,groups,function(i){paste0(round(mean(i,na.rm=T),2)," (",
+                                             round(sd(i,na.rm=T),2),")")})}
 mydcohen<-function(df,varcon,varchar){
   a<-as.data.frame(df %>% group_by({{varchar}}) %>% summarise(M = mean(na.omit({{varcon}})),SD = sd(na.omit({{varcon}}))))
   d.cohen<-round((a[1,2]-a[2,2])/((a[1,3]+a[2,3])/2),3)
@@ -388,5 +388,6 @@ proportion_test <- function(df, moment_var) {
 }
 
 print("Este set de funciones fue desarrallo por el investigador Duban Romero. Si detecta alg?n inconveniente al usar las funciones por favor escribir al correo: rduban@uninorte.edu.co")
+
 
 
